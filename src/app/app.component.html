@@ -8,18 +8,18 @@
     </mat-select>
   </div>
   <br>
-    <div class="grid mat-card" *ngIf="data; else noData">
-      <cdk-virtual-scroll-viewport itemSize="120" orientation="horizontal">
-        <div class="grid__column" *cdkVirtualFor="let date of headerCols">
-          <div class="grid__column__header-cell">{{date}}</div>
-          <br>
-          <div class="grid__column__value-cell">{{data.get(date) | titlecase}}</div>
-        </div>
-      </cdk-virtual-scroll-viewport>
-    </div>
-  <ng-template #noData>
+  <div class="grid mat-card" *ngIf="data.size">
+    <cdk-virtual-scroll-viewport itemSize="120" orientation="horizontal">
+      <div class="grid__column" *cdkVirtualFor="let date of headerCols">
+        <div class="grid__column__header-cell">{{date}}</div>
+        <br>
+        <div class="grid__column__value-cell">{{data.get(date) | titlecase}}</div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <div *ngIf="!data.size">
     No data :(
-  </ng-template>
+  </div>
 </div>
 
 

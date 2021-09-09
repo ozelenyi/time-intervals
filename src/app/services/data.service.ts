@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {delay} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 
 import fiveMinsMock from '../../assets/mocks/fiveMinsMock.json'

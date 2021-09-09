@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
-import {mergeMap} from "rxjs/operators";
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 
-import {DataService, ILogEntry} from "./services/data.service";
+import {DataService, ILogEntry} from './services/data.service';
 
 type TimeInterval = '5' | '30' | '60';
 
@@ -10,16 +10,17 @@ type TimeInterval = '5' | '30' | '60';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   title = 'time-intervals';
   selectedInterval$ = new BehaviorSubject<TimeInterval>('60');
-  data = new Map;
+  data = new Map<string, string>();
   headerCols: any[] = [];
 
-  constructor(private dataService: DataService,
-              private cd: ChangeDetectorRef) {
+  constructor(public dataService: DataService,
+              public cd: ChangeDetectorRef,
+  ) {
   }
 
   ngOnInit() {
@@ -49,17 +50,19 @@ export class AppComponent implements OnInit {
       const datetime = new Date(item.time * 1000).toLocaleString();
       this.headerCols.push(datetime);
       this.data.set(datetime, item.value);
-    })
+    });
   }
 
   getStreamByInterval(interval: TimeInterval): Observable<ILogEntry[]> {
     switch (interval) {
       case "5":
-        return this.dataService.getFiveMinsData()
+        return this.dataService.getFiveMinsData();
       case "30":
-        return this.dataService.getThirtyMinsData()
+        return this.dataService.getThirtyMinsData();
       case "60":
-        return this.dataService.getHourlyData()
+        return this.dataService.getHourlyData();
+      default:
+        return of([]);
     }
   }
 
